@@ -13,8 +13,25 @@ class MiPanel(wx.Panel):
             self,
             size=(100,40)
 )
-
         self.operacion = ""
+
+        sizer_principal = wx.BoxSizer(wx.VERTICAL)
+        fila_datos = wx.BoxSizer(wx.HORIZONTAL)
+
+        fila_datos.Add(self.textbox1, 0, wx.ALL, 10)
+        fila_datos.Add(self.textbox2, 0, wx.ALL, 10)
+        sizer_principal.AddStretchSpacer()
+
+        sizer_principal.Add(
+          fila_datos,
+            0,
+            wx.ALIGN_CENTER
+)
+
+        sizer_principal.AddStretchSpacer()
+        self.SetSizer(sizer_principal)
+
+
 
 
 class MiFrame(wx.Frame):
@@ -23,9 +40,6 @@ class MiFrame(wx.Frame):
         self.panel = MiPanel(self)
         menu_bar = wx.MenuBar()
         menu_calculos = wx.Menu()
-
-
-    
 
         menu_dtv = wx.Menu()
         self.m_distancia = menu_dtv.Append(
@@ -73,7 +87,7 @@ class MiFrame(wx.Frame):
         )
         self.Show()
 
-                # metodos 
+        # metodos 
     def opcion_Distancia(self, event):
             self.panel.operacion = "Distancia"
             print("Distancia")

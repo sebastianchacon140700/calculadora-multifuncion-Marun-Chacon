@@ -1,6 +1,39 @@
 import wx
 
 class MiPanel(wx.Panel):
+
+    def calcular(self, event):
+        valor1 = self.textbox1.GetValue()
+        valor2 = self.textbox2.GetValue()
+
+        if self.operacion == "Distancia":
+                resultado = valor1 * valor2
+
+        elif self.operacion == "Velocidad":
+            if valor2 == 0:
+                self.resultado.SetLabel(" el tiempo no puede ser 0")
+                return
+            
+            resultado = valor1 / valor2
+
+        elif self.operacion == "Tiempo":
+            if valor2 == 0:
+                self.resultado.SetLabel("La velocidad no puede ser 0")
+                return
+
+            resultado = valor1 / valor2
+
+
+        else:
+            self.resultado.SetLabel("Seleccione una operación")
+            return
+
+        self.resultado.SetLabel(f"Resultado: {resultado:g}")
+
+        
+    
+    
+
     def __init__(self, parent):
         super().__init__(parent)
         from wx.lib.masked import NumCtrl
@@ -15,11 +48,35 @@ class MiPanel(wx.Panel):
 )
         self.operacion = ""
 
+        self.boton_calcular = wx.Button(
+            self, label = "calcular", size=(100, 40)
+        )
+        self.boton_limpiar = wx.Button(
+              self, label= "limpiar", size= (100, 40)
+        )
+        
+        self.label1 = wx.StaticText(self, label="Dato 1")
+        self.label2 = wx.StaticText(self, label="Dato 2")
+
+        self.resultado = wx.StaticText(
+              self,label="Resultado:")
+
+
+        # sizer 
         sizer_principal = wx.BoxSizer(wx.VERTICAL)
         fila_datos = wx.BoxSizer(wx.HORIZONTAL)
+        fila_botones = wx.BoxSizer(wx.HORIZONTAL)
 
+
+        fila_datos.Add(self.label1, 0, wx.ALL, 10)
         fila_datos.Add(self.textbox1, 0, wx.ALL, 10)
+
+        fila_datos.Add(self.label2, 0, wx.ALL, 10)
         fila_datos.Add(self.textbox2, 0, wx.ALL, 10)
+
+        fila_botones.Add(self.boton_calcular, 0, wx.ALL, 10)
+        fila_botones.Add(self.boton_limpiar, 0, wx.ALL, 10)
+
         sizer_principal.AddStretchSpacer()
 
         sizer_principal.Add(
@@ -27,9 +84,39 @@ class MiPanel(wx.Panel):
             0,
             wx.ALIGN_CENTER
 )
+        sizer_principal.Add(
+              fila_botones, 0, 
+              wx.ALIGN_CENTER
+        )
+
+        sizer_principal.Add(
+              self.resultado, 0,
+              wx.ALIGN_CENTER | wx.ALL,
+              10
+        )
 
         sizer_principal.AddStretchSpacer()
         self.SetSizer(sizer_principal)
+
+        self.boton_calcular.Bind(
+              wx.EVT_BUTTON,
+              self.calcular
+        )
+
+        self.boton_limpiar.Bind(
+              wx.EVT_BUTTON,
+              self.limpiar
+        )
+
+
+
+        # EVENTOS     
+    def limpiar(self, event):
+        self.textbox1.SetValue(0)
+        self.textbox2.SetValue(0)
+        self.resultado.SetLabel("Resultado:")
+        self.operacion = ""
+              
 
 
 
@@ -90,15 +177,21 @@ class MiFrame(wx.Frame):
         # metodos 
     def opcion_Distancia(self, event):
             self.panel.operacion = "Distancia"
-            print("Distancia")
+            self.panel.label1.SetLabel("velocidad (m/s)")
+            self.panel.label2.SetLabel("tiempo (s)")
+            #print("Distancia")
         
     def opcion_Velocidad(self, event):
             self.panel.operacion = "Velocidad"
-            print("Velocidad")
+            self.panel.label1.SetLabel("distancia (m)")
+            self.panel.label2.SetLabel("tiempo (s)")
+            #print("Velocidad")
         
     def opcion_Tiempo(self, event):
             self.panel.operacion = "Tiempo"
-            print("Tiempo")
+            self.panel.label1.SetLabel("distancia (m)")
+            self.panel.label2.SetLabel("velocidad (m/s)")
+            #print("Tiempo")
 
 if __name__ == '__main__':
     app = wx.App(redirect=False)

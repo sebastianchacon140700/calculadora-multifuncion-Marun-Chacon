@@ -183,7 +183,6 @@ class MiPanel(wx.Panel):
         self.label2.SetLabel("dato 2")
 
 
-
 class MiFrame(wx.Frame):
     def __init__(self):
         super().__init__(None, title='convertidor de unidades', size=(600, 300))
@@ -218,8 +217,6 @@ class MiFrame(wx.Frame):
 )
         self.SetMenuBar(menu_bar)
    
-
-
 
    # botones
         self.Bind(
@@ -282,7 +279,6 @@ class MiFrame(wx.Frame):
             self.panel.datos2.SetSelection(0)
 
     
-
 if __name__ == '__main__':
     app = wx.App(redirect=False)
     frame = MiFrame()

@@ -87,12 +87,17 @@ class MiPanel(wx.Panel):
         from wx.lib.masked import NumCtrl
         self.textbox1 = NumCtrl(
             self,
-            size=(100,40)
+            size=(100,40),
+            fractionWidth=2,
+            allowNone=True
 )
 
         self.textbox2 = NumCtrl(
             self,
-            size=(100,40)
+            size=(100,40),
+            allowNone=True,
+            fractionWidth=2,
+            
 )
         self.operacion = ""
 
@@ -171,8 +176,8 @@ class MiPanel(wx.Panel):
 
         # EVENTOS     
     def limpiar(self, event):
-        self.textbox1.SetValue(0)
-        self.textbox2.SetValue(0)
+        self.textbox1.SetValue(None)
+        self.textbox2.SetValue(None)
         self.resultado.SetLabel("Resultado:")
         self.operacion = ""
 
@@ -211,6 +216,11 @@ class MiFrame(wx.Frame):
             menu_dtv,
             "Distancia - Tiempo - Velocidad"
 )
+        self.m_salir = menu_calculos.Append(
+            wx.ID_EXIT,
+            "SALIR"
+        )
+
         menu_bar.Append(
             menu_calculos,
             "Calculos"
@@ -236,6 +246,13 @@ class MiFrame(wx.Frame):
             self.opcion_Tiempo,
             self.m_tiempo
         )
+
+        self.Bind(
+            wx.EVT_MENU,
+            self.salir,
+            self.m_salir
+        )
+
         self.Show()
 
         # metodos 
@@ -277,6 +294,9 @@ class MiFrame(wx.Frame):
             )
             self.panel.datos1.SetSelection(0)
             self.panel.datos2.SetSelection(0)
+   
+    def salir(self, event):
+        self.Close()
 
     
 if __name__ == '__main__':

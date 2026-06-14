@@ -88,7 +88,15 @@ class MiPanel(wx.Panel):
         
         self.textbox.SetValue(0) 
 
-        self.label = wx.StaticText(self, label="Ingrese solo números")
+        self.label = wx.StaticText(
+            self, 
+            label="Seleccione una unidad de origen e ingrese un valor"
+            )
+        self.label_destino = wx.StaticText(
+            self,
+            label="Destino: Ninguno"
+            )
+
         self.boton1 = wx.Button(self, label='Convertir', size=(60,40))
         self.boton_limpiar = wx.Button(self, label='Limpiar', size=(60,40))
         self.combo_origen = wx.ComboBox(
@@ -102,15 +110,54 @@ class MiPanel(wx.Panel):
         self.origen = ""
 
         sizer_ppal = wx.BoxSizer(wx.VERTICAL)
-        fila = wx.BoxSizer(wx.HORIZONTAL)
 
-        fila.Add(self.boton1, 1, wx.ALL | wx.CENTER, 10)
-        fila.Add(self.combo_origen, 1, wx.ALL | wx.CENTER, 10)
-        fila.Add(self.textbox, 1, wx.ALL | wx.CENTER, 10)
-        fila.Add(self.boton_limpiar, 1, wx.ALL | wx.CENTER, 10)
+        fila_datos = wx.BoxSizer(wx.HORIZONTAL)
+        fila_botones = wx.BoxSizer(wx.HORIZONTAL)
 
-        sizer_ppal.Add(self.label, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 5)
-        sizer_ppal.Add(fila, 1, wx.EXPAND)
+
+        fila_datos.Add(
+            self.combo_origen, 1, 
+            wx.ALL | wx.CENTER, 10)
+        
+        fila_datos.Add(
+            self.textbox, 1, 
+            wx.ALL | wx.CENTER, 
+            10)
+        
+        fila_botones.Add(
+            self.boton1, 1, 
+            wx.ALL | wx.CENTER, 10)
+
+        
+        fila_botones.Add(
+            self.boton_limpiar, 1,
+            wx.ALL | wx.CENTER, 10)
+
+
+        sizer_ppal.Add(
+            self.label, 0,
+              wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 5
+              )
+
+        sizer_ppal.Add(
+            self.label_destino,
+            0,
+            wx.ALL | wx.ALIGN_CENTER_HORIZONTAL,
+            5
+            )
+
+
+
+        sizer_ppal.Add(
+         fila_datos, 0,
+           wx.ALIGN_CENTER)
+        
+        sizer_ppal.Add(
+            fila_botones,
+            0,
+            wx.ALIGN_CENTER
+        )
+        
         sizer_ppal.Add(self.resultado, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL)
 
         self.SetSizer(sizer_ppal)
@@ -133,7 +180,8 @@ class MiPanel(wx.Panel):
         self.resultado.SetLabel("")
         self.destino = ""
         self.origen = ""
-        self.combo_origen.Clear()      
+        self.combo_origen.Clear()
+        self.label_destino.SetLabel("Destino: Ninguno")      
     
 
 class MiVentana(wx.Frame):
@@ -220,6 +268,7 @@ class MiVentana(wx.Frame):
     # eventos de longitud
     def opcion_cm(self, event):
         self.panel.destino = "Centimetros"
+        self.panel.label_destino.SetLabel("Destino: Centimetros")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Pulgadas",
@@ -231,6 +280,7 @@ class MiVentana(wx.Frame):
 
     def opcion_pies(self, event):
         self.panel.destino = "Pies"
+        self.panel.label_destino.SetLabel("Destino: Pies")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Centimetros",
@@ -243,6 +293,7 @@ class MiVentana(wx.Frame):
 
     def opcion_pulgadas(self, event):
         self.panel.destino = "Pulgadas"
+        self.panel.label_destino.SetLabel("Destino: Pulgadas")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Centimetros",
@@ -254,6 +305,7 @@ class MiVentana(wx.Frame):
 
     def opcion_yardas(self, event):
         self.panel.destino = "Yardas"
+        self.panel.label_destino.SetLabel("Destino: Yardas")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Centimetros",
@@ -266,6 +318,7 @@ class MiVentana(wx.Frame):
     # eventos de peso
     def opcion_gramos(self, event):
         self.panel.destino = "Gramos"
+        self.panel.label_destino.SetLabel("Destino: Gramos")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Kilogramos",
@@ -278,6 +331,7 @@ class MiVentana(wx.Frame):
     
     def opcion_kilogramos(self, event):
         self.panel.destino = "Kilogramos"
+        self.panel.label_destino.SetLabel("Destino: Kilogramos")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Gramos",
@@ -290,6 +344,7 @@ class MiVentana(wx.Frame):
     
     def opcion_libras(self, event):
         self.panel.destino = "Libras"
+        self.panel.label_destino.SetLabel("Destino: Libras")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Gramos",
@@ -302,6 +357,7 @@ class MiVentana(wx.Frame):
 
     def opcion_toneladas(self, event):
         self.panel.destino = "Toneladas"
+        self.panel.label_destino.SetLabel("Destino: Toneladas")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Gramos",
@@ -315,6 +371,7 @@ class MiVentana(wx.Frame):
 
     def opcion_onzas(self, event):
         self.panel.destino = "Onzas"
+        self.panel.label_destino.SetLabel("Destino: Onzas")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Gramos",
@@ -328,6 +385,7 @@ class MiVentana(wx.Frame):
     # eventos  de temperatura
     def opcion_celsius(self, event):
         self.panel.destino = "Celsius"
+        self.panel.label_destino.SetLabel("Destino: Celsius")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Fahrenheit",
@@ -338,6 +396,7 @@ class MiVentana(wx.Frame):
 
     def opcion_fahrenheit(self, event):
         self.panel.destino = "Fahrenheit"
+        self.panel.label_destino.SetLabel("Destino: Fahrenheit")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Celsius",
@@ -348,6 +407,7 @@ class MiVentana(wx.Frame):
 
     def opcion_kelvin(self, event):
         self.panel.destino = "Kelvin"
+        self.panel.label_destino.SetLabel("Destino: Kelvin")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Celsius",
@@ -359,6 +419,7 @@ class MiVentana(wx.Frame):
     # eventos de datos informaticos
     def opcion_bits(self, event):
         self.panel.destino = "Bits"
+        self.panel.label_destino.SetLabel("Destino: Bits")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Bytes",
@@ -372,6 +433,7 @@ class MiVentana(wx.Frame):
 
     def opcion_bytes(self, event):
         self.panel.destino = "Bytes"
+        self.panel.label_destino.SetLabel("Destino: Bytes")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Bits",
@@ -385,6 +447,7 @@ class MiVentana(wx.Frame):
 
     def opcion_kilobytes(self, event):
         self.panel.destino = "Kilobytes"
+        self.panel.label_destino.SetLabel("Destino: Kilobytes")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Bits",
@@ -398,6 +461,7 @@ class MiVentana(wx.Frame):
 
     def opcion_megabytes(self, event):
         self.panel.destino = "Megabytes"
+        self.panel.label_destino.SetLabel("Destino: Megabytes")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Bits",
@@ -411,6 +475,7 @@ class MiVentana(wx.Frame):
 
     def opcion_gigabytes(self, event):
         self.panel.destino = "Gigabytes"
+        self.panel.label_destino.SetLabel("Destino: Gigabytes")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Bits",
@@ -424,6 +489,7 @@ class MiVentana(wx.Frame):
 
     def opcion_terabytes(self, event):
         self.panel.destino = "Terabytes"
+        self.panel.label_destino.SetLabel("Destino: Terabytes")
         self.panel.combo_origen.Clear()
         self.panel.combo_origen.AppendItems([
             "Bits",

@@ -264,6 +264,8 @@ class MiVentana(wx.Frame):
         self.Bind(wx.EVT_MENU, self.opcion_terabytes, self.datos_tb)
 
         self.Show()
+        
+    # eventos
 
     # eventos de longitud
     def opcion_cm(self, event):

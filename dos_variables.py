@@ -84,21 +84,31 @@ class PanelDosVariables(wx.Panel):
 
     def __init__(self, parent):
         super().__init__(parent)
-        from wx.lib.masked import NumCtrl
-        self.textbox1 = NumCtrl(
+        
+        self.textbox1 = wx.SpinCtrlDouble(
             self,
-            size=(100,40),
-            fractionWidth=2,
-            allowNone=True
+            value="0.00",
+            size=(120,40),
+            min=0,
+            max=1000000,
+            inc=0.01
 )
+        self.textbox1.SetDigits(2)
 
-        self.textbox2 = NumCtrl(
+
+        self.textbox2 = wx.SpinCtrlDouble(
             self,
-            size=(100,40),
-            allowNone=True,
-            fractionWidth=2,
-            
+            value="0.00",
+            size=(120,40),
+            min=0,
+            max=1000000,
+            inc=0.01
 )
+        self.textbox2.SetDigits(2)
+
+            
+
+
         self.operacion = ""
 
         self.datos1 = wx.Choice(
@@ -118,6 +128,12 @@ class PanelDosVariables(wx.Panel):
         self.boton_limpiar = wx.Button(
               self, label= "limpiar", size= (100, 40)
         )
+
+        self.boton_volver = wx.Button(
+            self,
+            label="Volver",
+            size=(100,40)
+            )
         
         self.label1 = wx.StaticText(self, label="Dato 1")
         self.label2 = wx.StaticText(self, label="Dato 2")
@@ -162,6 +178,14 @@ class PanelDosVariables(wx.Panel):
         )
 
         sizer_principal.AddStretchSpacer()
+
+        sizer_principal.Add(
+            self.boton_volver,
+            0,
+            wx.ALL | wx.ALIGN_RIGHT,
+            10
+            )
+        
         self.SetSizer(sizer_principal)
 
         self.boton_calcular.Bind(
@@ -174,18 +198,30 @@ class PanelDosVariables(wx.Panel):
               self.limpiar
         )
 
+        self.boton_volver.Bind(
+            wx.EVT_BUTTON,
+            self.volver
+)
+
         # EVENTOS     
     def limpiar(self, event):
-        self.textbox1.SetValue(None)
-        self.textbox2.SetValue(None)
+        self.textbox1.SetValue(0.0)
+        self.textbox2.SetValue(0.0)
         self.resultado.SetLabel("Resultado:")
         self.operacion = ""
 
         self.datos1.Clear()
         self.datos2.Clear()
               
-        self.label1.SetLabel("dato 1")
-        self.label2.SetLabel("dato 2")
+        self.label1.SetLabel("Dato 1")
+        self.label2.SetLabel("Dato 2")
+
+    def volver(self, event):
+        ventana = self.GetParent()
+        if ventana.parent:
+            ventana.parent.Show()
+
+        ventana.Close()
 
 
 class VentanaDosVariables(wx.Frame):
@@ -193,7 +229,7 @@ class VentanaDosVariables(wx.Frame):
         super().__init__(
             parent,
             title='convertidor de unidades',
-            size=(600, 300))
+            size=(700, 300))
         self.parent = parent
         self.panel = PanelDosVariables(self)
         menu_bar = wx.MenuBar()
@@ -257,6 +293,8 @@ class VentanaDosVariables(wx.Frame):
             self.m_salir
         )
 
+        self.Bind(wx.EVT_CLOSE, self.al_cerrar)
+
         self.Show()
 
         # metodos 
@@ -299,8 +337,19 @@ class VentanaDosVariables(wx.Frame):
             self.panel.datos1.SetSelection(0)
             self.panel.datos2.SetSelection(0)
    
+
     def salir(self, event):
+        if self.parent:
+            self.parent.Show()
+
         self.Close()
+
+
+    def al_cerrar(self, event):
+        if self.parent:
+            self.parent.Show()
+
+        event.Skip()
 
     
 if __name__ == '__main__':

@@ -9,19 +9,19 @@ from logicas.datos import convertir_datos
 class PanelUnaVariable(wx.Panel):
 
     def convertidor(self, event):
-        try:
-            valor = float(self.textbox.GetValue())
-        except:
-            self.resultado.SetLabel("ingrese solo numeros")
-            return
+        valor = self.textbox.GetValue()
         opcion = self.destino
-
+        
         if self.destino == "":
-            self.resultado.SetLabel("Seleccione una unidad de destino")
+            self.resultado.SetLabel(
+            "Seleccione una unidad de destino"
+        )
             return
 
         if self.origen == "":
-            self.resultado.SetLabel("Seleccione una unidad de origen")
+            self.resultado.SetLabel(
+            "Seleccione una unidad de origen"
+        )
             return
 
         if opcion in {"Centimetros" ,"Pulgadas", "Pies", "Yardas"}:
@@ -78,19 +78,19 @@ class PanelUnaVariable(wx.Panel):
    
 
     def __init__(self, parent):
-        super().__init__(parent)
-        from wx.lib.masked import NumCtrl
-
-        self.textbox = NumCtrl(
-            self,
-            size=(100,40),
-            allowNegative=False,
-            groupDigits=False,
-            allowNone = True,
-            value = None
-            )
+        super().__init__(parent)        
         
-        self.textbox.SetValue(0) 
+        
+        self.textbox = wx.SpinCtrlDouble(
+           self,
+            value="0.00",
+            size=(120,40),
+            min=-1000000,
+            max=1000000,
+            inc=0.01
+)
+
+        self.textbox.SetDigits(2)
 
         self.label = wx.StaticText(
             self, 
@@ -101,7 +101,7 @@ class PanelUnaVariable(wx.Panel):
             label="Destino: Ninguno"
             )
 
-        self.boton1 = wx.Button(self, label='Convertir', size=(60,40))
+        self.boton1 = wx.Button(self, label='Convertir', size=(100,40))
         self.boton_limpiar = wx.Button(self, label='Limpiar', size=(60,40))
 
         self.boton_volver = wx.Button(
@@ -138,15 +138,12 @@ class PanelUnaVariable(wx.Panel):
             self.boton1, 1, 
             wx.ALL | wx.CENTER, 10)
 
-        
         fila_botones.Add(
-            self.boton_limpiar, 1,
-            wx.ALL | wx.CENTER, 10)
-        
-        fila_botones.Add(
-            self.boton_volver,1,
-            wx.ALL | wx.CENTER,10)
-
+            self.boton_limpiar,
+            1,
+            wx.ALL | wx.CENTER,
+            10
+            )
 
         sizer_ppal.Add(
             self.label, 0,
@@ -172,7 +169,18 @@ class PanelUnaVariable(wx.Panel):
             wx.ALIGN_CENTER
         )
         
-        sizer_ppal.Add(self.resultado, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL)
+        sizer_ppal.Add(self.resultado,
+            0,
+            wx.ALL | wx.ALIGN_CENTER_HORIZONTAL)
+
+        sizer_ppal.AddStretchSpacer()
+
+        sizer_ppal.Add(
+            self.boton_volver,
+            0,
+            wx.ALL | wx.ALIGN_RIGHT,
+            10
+)
 
         self.SetSizer(sizer_ppal)
         
@@ -196,12 +204,12 @@ class PanelUnaVariable(wx.Panel):
 
 
     def limpiar(self, event):
-        self.textbox.SetValue(0)
+        self.textbox.SetValue(0.0)
         self.resultado.SetLabel("")
         self.destino = ""
         self.origen = ""
         self.combo_origen.Clear()
-        self.label_destino.SetLabel("Destino: Ninguno")
+        self.label_destino.SetLabel("Destino: Ninguno") 
 
     def volver(self, event):
         ventana = self.GetParent()

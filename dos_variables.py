@@ -116,25 +116,29 @@ class PanelDosVariables(wx.Panel):
         fila_botones = wx.BoxSizer(wx.HORIZONTAL)
 
         # Añadimos elementos a la fila del tipo de medida
-        fila_tipo.Add(self.label_tipo, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 10)
-        fila_tipo.Add(self.combo_tipo, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 10)
+        fila_tipo.Add(self.label_tipo,0,wx.ALL | wx.ALIGN_CENTER_VERTICAL,10)
+        fila_tipo.Add(self.combo_tipo,0,wx.ALL,10)
 
-        fila_datos.Add(self.label1, 0, wx.ALL, 10)
+        fila_datos.Add(self.label1, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 10)
         fila_datos.Add(self.textbox1, 0, wx.ALL, 10)
+        fila_datos.AddSpacer(20)
         fila_datos.Add(self.datos1, 0, wx.ALL, 10)
 
-        fila_datos.Add(self.label2, 0, wx.ALL, 10)
+        fila_datos.AddSpacer(40)
+
+        fila_datos.Add(self.label2, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL, 10)
         fila_datos.Add(self.textbox2, 0, wx.ALL, 10)
+        fila_datos.AddSpacer(20)
         fila_datos.Add(self.datos2, 0, wx.ALL, 10)
 
-        fila_botones.Add(self.boton_calcular, 0, wx.ALL, 10)
-        fila_botones.Add(self.boton_limpiar, 0, wx.ALL, 10)
+        fila_botones.Add(self.boton_calcular,1,wx.ALL,10)
+        fila_botones.Add(self.boton_limpiar,1,wx.ALL,10)
 
         sizer_principal.AddStretchSpacer()
         sizer_principal.Add(fila_tipo, 0, wx.ALIGN_CENTER) # Colocamos el selector arriba
-        sizer_principal.Add(fila_datos, 0, wx.ALIGN_CENTER)
-        
-        sizer_principal.Add(fila_botones, 0, wx.ALIGN_CENTER)
+        sizer_principal.Add(fila_datos,0,wx.ALIGN_CENTER | wx.ALL,10)
+
+        sizer_principal.Add(fila_botones,0, wx.ALIGN_CENTER)
         sizer_principal.Add(self.resultado, 0, wx.ALIGN_CENTER | wx.ALL, 10)
         sizer_principal.AddStretchSpacer()
         sizer_principal.Add(self.boton_volver, 0, wx.ALL | wx.ALIGN_RIGHT, 10)
@@ -203,7 +207,7 @@ class PanelDosVariables(wx.Panel):
 
 class VentanaDosVariables(wx.Frame):
     def __init__(self, parent = None):
-        super().__init__(parent, title='Calculadora Fisica', size=(700, 450)) # Ajustamos alto
+        super().__init__(parent, title='Calculadora Fisica', size=(850, 550)) # Ajustamos alto
         self.parent = parent
         self.panel = PanelDosVariables(self)
         

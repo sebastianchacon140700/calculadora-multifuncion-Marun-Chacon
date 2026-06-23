@@ -128,7 +128,7 @@ class PanelUnaVariable(wx.Panel):
             )
 
         self.boton1 = wx.Button(self, label='Convertir', size=(100,40))
-        self.boton_limpiar = wx.Button(self, label='Limpiar', size=(60,40))
+        self.boton_limpiar = wx.Button(self, label='Limpiar', size=(100,40))
 
         self.boton_volver = wx.Button(
             self,
@@ -138,13 +138,15 @@ class PanelUnaVariable(wx.Panel):
         self.combo_origen = wx.ComboBox(
             self,
             choices=[],
-            style=wx.CB_READONLY
+            style=wx.CB_READONLY,
+            size = (140,-1)
             )
 
         self.combo_destino = wx.ComboBox(
             self,
             choices=[],
-            style=wx.CB_READONLY
+            style=wx.CB_READONLY,
+            size = (140,-1)
             )
                     
         self.resultado = wx.StaticText(self, label="")
@@ -177,34 +179,30 @@ class PanelUnaVariable(wx.Panel):
         
 
         # FILA BOTONES
-        fila_datos.Add(
-            self.combo_origen, 1, 
-            wx.ALL | wx.CENTER, 10)
-        
-        fila_datos.Add(
-            self.textbox, 0, 
-            wx.ALL | wx.CENTER, 
-            10)
-        
-        fila_datos.Add(
-            self.combo_destino,
-            1,
-            wx.ALL | wx.CENTER,
-            10
-            )
+        fila_datos.Add(self.combo_origen,0,wx.ALL,10)
+
+        fila_datos.AddSpacer(20)
+
+        fila_datos.Add(self.textbox,0,wx.ALL,10)
+
+        fila_datos.AddSpacer(20)
+
+        fila_datos.Add(self.combo_destino,0,wx.ALL,10)
 
 
         # FILA BOTONES  
         fila_botones.Add(
-            self.boton1, 1, 
+            self.boton1, 0, 
             wx.ALL | wx.CENTER, 10)
 
         fila_botones.Add(
             self.boton_limpiar,
-            1,
+            0,
             wx.ALL | wx.CENTER,
             10
             )
+
+        sizer_ppal.AddStretchSpacer()
 
         sizer_ppal.Add(
             self.label, 0,
@@ -291,11 +289,21 @@ class PanelUnaVariable(wx.Panel):
 
     def limpiar(self, event):
         self.textbox.SetValue(0.0)
+
         self.resultado.SetLabel("")
         self.destino = ""
         self.origen = ""
+
         self.combo_origen.Clear()
-        self.label_destino.SetLabel("Destino: Ninguno") 
+        self.combo_destino.Clear()
+
+        self.combo_magnitud.SetSelection(0)
+
+        self.label_destino.SetLabel("Destino: Ninguno")
+
+        self.label.SetLabel(
+            "Seleccione una unidad de origen e ingrese un valor"
+        )
 
     def volver(self, event):
         ventana = self.GetParent()
@@ -395,7 +403,7 @@ class VentanaUnaVariable(wx.Frame):
         super().__init__(
             parent, 
             title='convertidor de unidades',
-            size=(750, 500))
+            size=(850, 550))
         self.parent = parent
         self.panel = PanelUnaVariable(self)
 

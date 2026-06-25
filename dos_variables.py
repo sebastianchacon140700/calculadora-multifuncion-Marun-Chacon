@@ -14,6 +14,11 @@ class PanelDosVariables(wx.Panel):
 
          
     def calcular(self, event):
+        
+        unidad_resultado = "Km/h"
+        if self.datos3.IsShown():
+            unidad_resultado = self.datos3.GetStringSelection()
+
         valor1 = self.textbox1.GetValue()
         valor2 = self.textbox2.GetValue()
 
@@ -26,6 +31,7 @@ class PanelDosVariables(wx.Panel):
                 
                 resultado = calcular_distancia(
                     valor1,
+                    unidad1,
                     valor2,
                     unidad2
                     )
@@ -41,14 +47,19 @@ class PanelDosVariables(wx.Panel):
                     unidad2
                     )
 
-                resultado_unidad = "km/h"
+                if unidad_resultado == "m/s":
+                    resultado = resultado / 3.6
+                    resultado_unidad = "m/s"
+                else:
+                    resultado_unidad = "Km/h"
 
             elif self.operacion == "Tiempo":
                 
                 resultado = calcular_tiempo(
                     valor1,
                     unidad1,
-                    valor2
+                    valor2,
+                    unidad2
                     )
 
                 if resultado < 1.0:
@@ -89,7 +100,13 @@ class PanelDosVariables(wx.Panel):
             choices=["Seleccionar...", "Distancia", "Velocidad", "Tiempo"]
         )
         self.combo_tipo.SetSelection(0) # Inicia en "Seleccionar..."
-        
+
+        self.label_resultado = wx.StaticText(
+            self,
+            label="Mostrar resultado en:"
+        )
+        self.label_resultado.Hide()
+
         self.textbox1 = wx.SpinCtrlDouble(self, value="0.00", size=(120,40), min=0, max=1000000, inc=0.01)
         self.textbox1.SetDigits(2)
 
@@ -100,6 +117,8 @@ class PanelDosVariables(wx.Panel):
 
         self.datos1 = wx.Choice(self, choices=[])
         self.datos2 = wx.Choice(self, choices=[])
+        self.datos3 = wx.Choice(self,choices=["Km/h", "m/s"])
+        self.datos3.Hide()
 
         self.boton_calcular = wx.Button(self, label="calcular", size=(100, 40))
         self.boton_limpiar = wx.Button(self, label="limpiar", size=(100, 40))
@@ -108,6 +127,7 @@ class PanelDosVariables(wx.Panel):
         self.label1 = wx.StaticText(self, label="Dato 1")
         self.label2 = wx.StaticText(self, label="Dato 2")
         self.resultado = wx.StaticText(self, label="Resultado:")
+        
 
         # Sizers (Organizadores visuales)
         sizer_principal = wx.BoxSizer(wx.VERTICAL)
@@ -131,6 +151,7 @@ class PanelDosVariables(wx.Panel):
         fila_datos.AddSpacer(20)
         fila_datos.Add(self.datos2, 0, wx.ALL, 10)
 
+
         fila_botones.Add(self.boton_calcular,1,wx.ALL,10)
         fila_botones.Add(self.boton_limpiar,1,wx.ALL,10)
 
@@ -140,6 +161,8 @@ class PanelDosVariables(wx.Panel):
 
         sizer_principal.Add(fila_botones,0, wx.ALIGN_CENTER)
         sizer_principal.Add(self.resultado, 0, wx.ALIGN_CENTER | wx.ALL, 10)
+        sizer_principal.Add(self.label_resultado, 0, wx.ALIGN_CENTER | wx.ALL, 10)
+        sizer_principal.Add(self.datos3, 0, wx.ALIGN_CENTER | wx.ALL,10)
         sizer_principal.AddStretchSpacer()
         sizer_principal.Add(self.boton_volver, 0, wx.ALL | wx.ALIGN_RIGHT, 10)
         
@@ -161,10 +184,16 @@ class PanelDosVariables(wx.Panel):
             self.operacion = "Distancia"
             self.label1.SetLabel("velocidad")
             self.label2.SetLabel("tiempo")
-            self.datos1.SetItems(["Km/h"])
+            self.datos1.SetItems(["Km/h","m/s"])
             self.datos2.SetItems(["Minutos", "Horas", "Dias"])
             self.datos1.SetSelection(0)
             self.datos2.SetSelection(0)
+            self.label_resultado.Hide()
+            self.datos3.Hide()
+            self.Layout()
+
+
+
 
         elif seleccion == "Velocidad":
             self.operacion = "Velocidad"
@@ -174,15 +203,22 @@ class PanelDosVariables(wx.Panel):
             self.datos2.SetItems(["Minutos", "Horas", "Dias"])
             self.datos1.SetSelection(0)
             self.datos2.SetSelection(0)
+            self.label_resultado.Show()
+            self.datos3.Show()
+            self.Layout()
+            self.datos3.SetSelection(0)
 
         elif seleccion == "Tiempo":
             self.operacion = "Tiempo"
             self.label1.SetLabel("distancia")
             self.label2.SetLabel("velocidad")
             self.datos1.SetItems(["Metros", "Kilometros", "Yardas", "Millas"])
-            self.datos2.SetItems(["Km/h"])
+            self.datos2.SetItems(["Km/h", "m/s"])
             self.datos1.SetSelection(0)
             self.datos2.SetSelection(0)
+            self.label_resultado.Hide()
+            self.datos3.Hide()
+            self.Layout()
         else:
             self.limpiar(None)
 
@@ -193,6 +229,10 @@ class PanelDosVariables(wx.Panel):
         self.operacion = ""
         self.datos1.Clear()
         self.datos2.Clear()
+        self.label_resultado.Hide()
+        self.datos3.Hide()
+        self.Layout()
+        self.datos3.SetSelection(wx.NOT_FOUND)
         self.label1.SetLabel("Dato 1")
         self.label2.SetLabel("Dato 2")
         if event: # Solo resetea el combo si se pulsó el botón limpiar explícitamente

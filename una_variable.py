@@ -120,8 +120,19 @@ class PanelUnaVariable(wx.Panel):
 
         self.label = wx.StaticText(
             self, 
-            label="Seleccione una unidad de origen e ingrese un valor"
+            label="Ingrese un valor y seleccione las unidades"
             )
+
+        self.label_a = wx.StaticText(
+            self,label="A")
+        
+
+        fuente = self.label_a.GetFont()
+        fuente.SetWeight(wx.FONTWEIGHT_BOLD)
+        fuente.SetPointSize(12)
+        self.label_a.SetFont(fuente)
+
+
         self.label_destino = wx.StaticText(
             self,
             label="Destino: Ninguno"
@@ -179,13 +190,17 @@ class PanelUnaVariable(wx.Panel):
         
 
         # FILA BOTONES
-        fila_datos.Add(self.combo_origen,0,wx.ALL,10)
-
-        fila_datos.AddSpacer(20)
-
         fila_datos.Add(self.textbox,0,wx.ALL,10)
 
         fila_datos.AddSpacer(20)
+
+        fila_datos.Add(self.combo_origen,0,wx.ALL,10)
+
+        fila_datos.AddSpacer(10)
+
+        fila_datos.Add(self.label_a,0,wx.ALL | wx.ALIGN_CENTER_VERTICAL,10)
+
+        fila_datos.AddSpacer(10)
 
         fila_datos.Add(self.combo_destino,0,wx.ALL,10)
 

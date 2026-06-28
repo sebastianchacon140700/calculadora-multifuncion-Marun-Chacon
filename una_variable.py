@@ -61,49 +61,48 @@ class PanelUnaVariable(wx.Panel):
         guardar_historial_una(self.origen,opcion,valor, resultado)
    
     #-----------------------------------------------------------
-    # Funciones de...
     #-----------------------------------------
     def __init__(self, parent):
-        super().__init__(parent)        
-        
-        self.label_magnitud = wx.StaticText(self,label="Magnitud:")
+        """
+        Inicia el panel, configura widgets de entrada, 
+        estilos de texto y define los estados iniciales.
+        """
+        super().__init__(parent)      
 
+    #Configuración de Selección de Magnitud
+        self.label_magnitud = wx.StaticText(self,label="Magnitud:")
         self.combo_magnitud = wx.Choice(self,
             choices=[
                 "Seleccionar...",
                 "Longitud",
                 "Peso",
                 "Temperatura",
-                "Datos"
-                ])
-
+                "Datos"])
         self.combo_magnitud.SetSelection(0)
-           
+    
+    #Configuración del boton de solo numeros
         self.textbox = wx.SpinCtrlDouble(self,
             value="0.00",
             size=(120,40),
             min=-1000000,
             max=1000000,
-            inc=0.01
-            )
-
+            inc=0.01)
         self.textbox.SetDigits(2)
 
         self.label = wx.StaticText(self,label="Ingrese un valor y seleccione las unidades")
-
+    ## Aplicar estilo en negrita a la etiqueta "A"
         self.label_a = wx.StaticText(self,label="A")
-
         fuente = self.label_a.GetFont()
         fuente.SetWeight(wx.FONTWEIGHT_BOLD)
         fuente.SetPointSize(12)
 
         self.label_a.SetFont(fuente)
         self.label_destino = wx.StaticText(self, label="Destino: Ninguno")
-
+    #Botones de Control
         self.boton1 = wx.Button(self, label='Convertir', size=(100,40))
         self.boton_limpiar = wx.Button(self, label='Limpiar', size=(100,40))
         self.boton_volver = wx.Button(self,label="Volver",size=(100,40))
-
+    #Combos de Unidades (Origen y Destino)
         self.combo_origen = wx.ComboBox(
             self,
             choices=[],
@@ -115,25 +114,24 @@ class PanelUnaVariable(wx.Panel):
             choices=[],
             style=wx.CB_READONLY,
             size = (140,-1))
-                    
+    #Variables de Estado
         self.resultado = wx.StaticText(self, label="")
         self.destino = ""
         self.origen = ""
 
     #-----------------------------------------------------
-    # SIZER 
-    #------------
+    # SIZER Principales
+
         sizer_ppal = wx.BoxSizer(wx.VERTICAL)
         fila_datos = wx.BoxSizer(wx.HORIZONTAL)
         fila_botones = wx.BoxSizer(wx.HORIZONTAL)
         fila_magnitud = wx.BoxSizer(wx.HORIZONTAL)
 
-    # FILA MAGNITUD 
+    # Fila de selección de magnitud 
         fila_magnitud.Add(self.label_magnitud, 0, wx.ALL | wx.ALIGN_CENTER_VERTICAL,10 )
         fila_magnitud.Add(self.combo_magnitud,0, wx.ALL | wx.ALIGN_CENTER_VERTICAL,)
         
-
-    # FILA BOTONES
+    # Fila de entrada de datos (Valor, Origen y Destino)
         fila_datos.Add(self.textbox,0,wx.ALL,10)
         fila_datos.AddSpacer(20)
         fila_datos.Add(self.combo_origen,0,wx.ALL,10)
@@ -142,21 +140,22 @@ class PanelUnaVariable(wx.Panel):
         fila_datos.AddSpacer(10)
         fila_datos.Add(self.combo_destino,0,wx.ALL,10)
 
+    #Fila de botones
         fila_botones.Add(self.boton1, 0,wx.ALL | wx.CENTER, 10)
         fila_botones.Add(self.boton_limpiar, 0,wx.ALL | wx.CENTER, 10)
 
-        sizer_ppal.AddStretchSpacer()
+        sizer_ppal.AddStretchSpacer()       ## Espaciado flexible
         sizer_ppal.Add(self.label, 0,wx.ALL | wx.ALIGN_CENTER_HORIZONTAL, 5)
         sizer_ppal.Add(self.label_destino,0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL,5 )
         sizer_ppal.Add(fila_magnitud,0, wx.ALIGN_CENTER)
         sizer_ppal.Add(fila_datos, 0, wx.ALIGN_CENTER)   
         sizer_ppal.Add( fila_botones, 0, wx.ALIGN_CENTER )
         sizer_ppal.Add(self.resultado, 0, wx.ALL | wx.ALIGN_CENTER_HORIZONTAL)
-        sizer_ppal.AddStretchSpacer()
+        sizer_ppal.AddStretchSpacer()       # Espaciado flexible
         sizer_ppal.Add(self.boton_volver, 0, wx.ALL | wx.ALIGN_RIGHT,10)
         self.SetSizer(sizer_ppal)
             
-    # eventos de botones 
+    # Eventos de botones 
         self.boton1.Bind(wx.EVT_BUTTON, self.convertidor)
         self.boton_limpiar.Bind(wx.EVT_BUTTON, self.limpiar)
         self.boton_volver.Bind( wx.EVT_BUTTON,self.volver)

@@ -50,7 +50,11 @@ class MiVentana(wx.Frame):
             "advancedsplash.png"))
         
         if os.path.exists(pn):
-            bitmap = wx.Bitmap(pn, wx.BITMAP_TYPE_PNG)
+            imagen = wx.Image(pn, wx.BITMAP_TYPE_PNG)
+            
+            # Tamaño máximo del splash
+            imagen = imagen.Scale(700, 450, wx.IMAGE_QUALITY_HIGH)
+            bitmap = wx.Bitmap(imagen)
             shadow = wx.WHITE
 
         # Creamos el Splash Screen. Se cerrará en 3000ms (3 segundos)

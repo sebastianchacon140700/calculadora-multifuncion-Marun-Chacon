@@ -34,7 +34,7 @@ def Ayuda(parent_window):
             print("No se pudo cargar el logo")
     
 
-    info.Name = "Guía de uso"
+    info.Name = "Guía de Ayuda"
     info.Version = "1.0.2"
     info.Copyright = "(C) 2026 Universidad Nacional de Pilar"
     

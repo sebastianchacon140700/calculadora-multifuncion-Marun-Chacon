@@ -16,6 +16,7 @@ class MiVentana(wx.Frame):
             None,
             title="Convertidor de Unidades y Calculadora Fisica",
             size=(600, 400)
+
         )
         # Ocultamos la ventana explícitamente mientras carga el splash
         self.Hide()
@@ -246,6 +247,8 @@ class MiVentana(wx.Frame):
 
         self.Centre()
 
+        wx.CallLater(3000, self.Show)
+
     def on_abrir_una_variable(self, event):
         self.Hide()
         ventana = VentanaUnaVariable(parent=self)
@@ -273,14 +276,14 @@ class MiVentana(wx.Frame):
 
         info.SetDevelopers([
             "Mikel Sebastián Chacón Vásquez",
-            "Susana Patriciamaru"
+            "Susana Pratricia Marun"
             ])
         
         info.SetLicense(
             "Este software fue desarrollado con fines académicos."
             )
         info.SetWebSite(
-            "https://github.com/sebastianchacon140700/proyecto_final_poo.git",
+            "https://github.com/sebastianchacon140700/calculadora-multifuncion.git",
             "Repositorio del proyecto"
             )
 
@@ -300,6 +303,5 @@ if __name__ == "__main__":
     app = wx.App(False)
 
     frame = MiVentana()
-    frame.Show()
 
     app.MainLoop()
